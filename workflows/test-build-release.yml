@@ -1,0 +1,26 @@
+
+name: test
+on: push
+jobs:
+  tests:
+    name: Run tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Commit test
+        uses: wagoid/commitlint-github-action@v1
+
+      - name: Markdown test
+        id: markdown_test
+        uses: steinbrueckri/markdownlint@master
+        with:
+          path: "*.md"
+
+      - name: Print Output
+        run: |
+          echo ${{ steps.markdown_test.outputs.output }}
+        if: always()
